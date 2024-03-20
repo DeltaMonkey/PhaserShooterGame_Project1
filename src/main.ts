@@ -8,9 +8,12 @@ const GameConfig: Phaser.Types.Core.GameConfig = {
     height: 135,
     backgroundColor: '#00224D',
     scene: [PreLoader, Level_1],
-    physics: { default: 'arcade', arcade: {
-        debug: true
-    } },
+    physics: { 
+        default: 'arcade', 
+        arcade: {
+            /* debug: true */
+        } 
+    },
     parent: 'gamediv',
     scale: {
         zoom: 3

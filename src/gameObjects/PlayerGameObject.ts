@@ -27,26 +27,33 @@ export default class PlayerGameObject extends Phaser.GameObjects.Container
     }
 
     preUpdate() {
-        const startX = this.x;
-        const startY = this.y;
+        const body = this.body as Phaser.Physics.Arcade.Body;
+
+        body.setVelocity(0, 0);
 
         if(this.arrow.right.isDown) {
-            this.x += 2
+            body.setVelocityX(150);
         }
         else if(this.arrow.left.isDown) {
-            this.x -= 2
+            body.setVelocityX(-150);
         }
         
         // Handle vertical movements
         if(this.arrow.down.isDown) {
-            this.y += 2
+            body.setVelocityY(150);
         }
         else if(this.arrow.up.isDown) {
-            this.y -= 2
+            body.setVelocityY(-150);
         }
 
-        if(startX == this.x && startY == this.y)
-            this.player.play(AnimationKeys.PlayerIdle, true);
-        else this.player.play(AnimationKeys.PlayerWalk, true);
+        if(body.velocity.x != 0 && body.velocity.y != 0)
+        {
+            body.velocity.x = body.velocity.x / 1.5;
+            body.velocity.y = body.velocity.y / 1.5;
+        }
+
+        if(body.velocity.x != 0 || body.velocity.y != 0)
+            this.player.play(AnimationKeys.PlayerWalk, true);
+        else  this.player.play(AnimationKeys.PlayerIdle, true);
     }
 }

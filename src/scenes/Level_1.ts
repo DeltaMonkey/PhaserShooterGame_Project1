@@ -2,11 +2,12 @@ import 'phaser';
 import SceneKeys from '../consts/SceneKeys';
 import TextureKeys from '../consts/TextureKeys';
 import PlayerGameObject from '../gameObjects/PlayerGameObject';
+import EnemyGameObject from '../gameObjects/EnemyGameObject';
 
 export default class Level_1 extends Phaser.Scene
 {
     private playerGameObject: PlayerGameObject;
-   
+    private enemyGameObjects: Phaser.Physics.Arcade.Group;
 
     constructor() {
         super(SceneKeys.Level_1);
@@ -15,6 +16,11 @@ export default class Level_1 extends Phaser.Scene
     preload() {
         this.playerGameObject = new PlayerGameObject(this, 120, 67);
         this.add.existing(this.playerGameObject);
+
+        this.enemyGameObjects = this.physics.add.group();
+        const enemy1 = new EnemyGameObject(this, 30, 30);
+        this.add.existing(enemy1);
+        this.enemyGameObjects.add(enemy1);
     }
 
     create() {

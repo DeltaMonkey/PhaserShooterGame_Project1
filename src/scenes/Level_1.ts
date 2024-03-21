@@ -15,8 +15,6 @@ export default class Level_1 extends Phaser.Scene
     preload() {
         this.playerGameObject = new PlayerGameObject(this, 120, 67);
         this.add.existing(this.playerGameObject);
-
-        this.physics.add.sprite(50, 50, TextureKeys.PlayerBullet);
     }
 
     create() {
@@ -45,5 +43,6 @@ export default class Level_1 extends Phaser.Scene
         this.physics.add.collider(this.playerGameObject, bottomWall);
         this.physics.add.collider(this.playerGameObject, leftWall);
         this.physics.add.collider(this.playerGameObject, rightWall);
+
     }
 }

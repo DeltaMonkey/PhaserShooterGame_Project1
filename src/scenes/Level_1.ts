@@ -2,12 +2,12 @@ import 'phaser';
 import SceneKeys from '../consts/SceneKeys';
 import TextureKeys from '../consts/TextureKeys';
 import PlayerGameObject from '../gameObjects/PlayerGameObject';
-import EnemyGameObject from '../gameObjects/EnemyGameObject';
+import EnemySpawner from '../gameObjects/EnemySpawner';
 
 export default class Level_1 extends Phaser.Scene
 {
     private playerGameObject: PlayerGameObject;
-    private enemyGameObjects: Phaser.Physics.Arcade.Group;
+    private enemySpawners: Phaser.Physics.Arcade.Group;
 
     constructor() {
         super(SceneKeys.Level_1);
@@ -16,20 +16,16 @@ export default class Level_1 extends Phaser.Scene
     preload() {
         this.playerGameObject = new PlayerGameObject(this, 120, 67);
         this.add.existing(this.playerGameObject);
-
-        this.enemyGameObjects = this.physics.add.group();
-        const enemy1 = new EnemyGameObject(this, 30, 30, this.playerGameObject);
-        this.add.existing(enemy1);
-        this.enemyGameObjects.add(enemy1);
     }
 
     create() {
         this.createWalls();
+        this.createEnemySpawners();
 
         console.log("Level_1 is working");       
     }
 
-    createWalls() {
+    private createWalls(): void {
         const brickSize = 4; // Size of my brick image (4x4 pixels)
     
         // Add walls to the edge of the game scene
@@ -49,6 +45,17 @@ export default class Level_1 extends Phaser.Scene
         this.physics.add.collider(this.playerGameObject, bottomWall);
         this.physics.add.collider(this.playerGameObject, leftWall);
         this.physics.add.collider(this.playerGameObject, rightWall);
+    }
 
+    private createEnemySpawners(): void {
+        this.enemySpawners = this.physics.add.group();
+
+        const enemySpawner1 = new EnemySpawner(this, 30, 30, this.playerGameObject);
+        this.add.existing(enemySpawner1);
+        this.enemySpawners.add(enemySpawner1);
+
+        const enemySpawner2 = new EnemySpawner(this, 210, 30, this.playerGameObject);
+        this.add.existing(enemySpawner2);
+        this.enemySpawners.add(enemySpawner2);  
     }
 }

@@ -12,7 +12,7 @@ export default class EnemyGameObject extends Phaser.GameObjects.Container
     private player: PlayerGameObject;
     private enemyBullets: Phaser.Physics.Arcade.Group;
     private lastWalk: number = 0;
-    private lastFired: number = 0;
+    private lastFired: number = new Date().getTime() + FIRERATE;
 
     constructor(scene: Phaser.Scene, x: number, y: number, player: PlayerGameObject) {
         super(scene, x, y);

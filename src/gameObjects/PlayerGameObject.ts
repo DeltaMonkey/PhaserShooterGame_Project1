@@ -8,6 +8,7 @@ export default class PlayerGameObject extends Phaser.GameObjects.Container
 {
     private player: Phaser.GameObjects.Sprite;
     private arrow: Phaser.Types.Input.Keyboard.CursorKeys;
+    private movementKeys: any;
     private playerBullets: Phaser.Physics.Arcade.Group;
     private lastFired: number = 0;
 
@@ -19,6 +20,7 @@ export default class PlayerGameObject extends Phaser.GameObjects.Container
             .play(AnimationKeys.PlayerIdle);
 
         this.arrow = scene.input.keyboard!.createCursorKeys();
+        this.movementKeys = scene.input.keyboard!.addKeys({ up: 'W', left: 'A', down: 'S', right: 'D' });
 
         this.add(this.player);
 
@@ -38,18 +40,18 @@ export default class PlayerGameObject extends Phaser.GameObjects.Container
 
         body.setVelocity(0, 0);
 
-        if(this.arrow.right.isDown) {
+        if(this.arrow.right.isDown || this.movementKeys.right.isDown) {
             body.setVelocityX(50);
         }
-        else if(this.arrow.left.isDown) {
+        else if(this.arrow.left.isDown || this.movementKeys.left.isDown) {
             body.setVelocityX(-50);
         }
         
         // Handle vertical movements
-        if(this.arrow.down.isDown) {
+        if(this.arrow.down.isDown || this.movementKeys.down.isDown) {
             body.setVelocityY(50);
         }
-        else if(this.arrow.up.isDown) {
+        else if(this.arrow.up.isDown || this.movementKeys.up.isDown) {
             body.setVelocityY(-50);
         }
 

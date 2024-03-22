@@ -32,7 +32,8 @@ export default class EnemyGameObject extends Phaser.GameObjects.Container
 
         this.enemyBullets = this.scene.physics.add.group();
 
-        this.scene.physics.add.collider(this.player.getBullets(), this, this.bulletHitByPlayerBulet, undefined, this);
+        this.scene.physics.add.collider(this.player.getBullets(), this, this.hitByPlayer, undefined, this);
+        this.scene.physics.add.collider(this.enemyBullets, this.player, this.hitThePlayer, undefined, this);
     }
 
     preUpdate() {
@@ -89,11 +90,19 @@ export default class EnemyGameObject extends Phaser.GameObjects.Container
     }
 
     // Define a function to handle what happens when a bullet hits an enemy
-    private bulletHitByPlayerBulet(
-        bullet: Phaser.Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
+    private hitByPlayer(
+        playerBullet: Phaser.Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
         enemy: Phaser.Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile
     ): void {
-        bullet.destroy(); // Destroy the bullet
+        playerBullet.destroy(); // Destroy the bullet
         enemy.destroy(); // Destroy the enemy (you might want to add some other behavior here)
+    }
+
+    private hitThePlayer(
+        enemyBullet: Phaser.Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
+        player: Phaser.Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile
+    ): void {
+        enemyBullet.destroy(); // Destroy the bullet
+        player.destroy(); // Destroy the enemy (you might want to add some other behavior here)
     }
 }

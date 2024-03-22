@@ -18,7 +18,7 @@ export default class Level_1 extends Phaser.Scene
         this.add.existing(this.playerGameObject);
 
         this.enemyGameObjects = this.physics.add.group();
-        const enemy1 = new EnemyGameObject(this, 30, 30);
+        const enemy1 = new EnemyGameObject(this, 30, 30, this.playerGameObject);
         this.add.existing(enemy1);
         this.enemyGameObjects.add(enemy1);
     }

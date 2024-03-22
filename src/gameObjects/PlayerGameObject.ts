@@ -63,21 +63,7 @@ export default class PlayerGameObject extends Phaser.GameObjects.Container
             this.player.play(AnimationKeys.PlayerWalk, true);
         else  this.player.play(AnimationKeys.PlayerIdle, true);
 
-        // Update bullet positions
-        this.playerBullets.getChildren().forEach((bullet: Phaser.GameObjects.GameObject) => {
-            if (bullet.body!.position.x > this.scene.scale.width) {
-                bullet.destroy(); // Delete bullet if out of screen
-            }
-            if (bullet.body && bullet.body!.position.x < 0) {
-                bullet.destroy(); // Delete bullet if out of screen
-            }
-            if (bullet.body && bullet.body!.position.y > this.scene.scale.height) {
-                bullet.destroy(); // Delete bullet if out of screen
-            }
-            if (bullet.body && bullet.body!.position.y < 0) {
-                bullet.destroy(); // Delete bullet if out of screen
-            }
-        });
+        this.cleanBullets();
 
         // Fire bullet towards mouse position on left mouse click
         if (this.scene.input.activePointer.leftButtonDown() &&  new Date().getTime() - this.lastFired > FIRERATE) {
@@ -86,12 +72,33 @@ export default class PlayerGameObject extends Phaser.GameObjects.Container
         }
     }
 
-    fireBullet(x: number, y: number) {
+    private fireBullet(x: number, y: number) {
         const bullet = this.playerBullets.create(
             (this.body?.position.x as number) + this.player.width / 2, 
             (this.body?.position.y as number) + this.player.width / 2, 
             TextureKeys.PlayerBullet); // Create a bullet at (0,0)
         bullet.setOrigin(0.5, 0.5); // Set the origin to the center of the bullet
         this.scene.physics.moveToObject(bullet, { x: x, y: y }, 100); // Move bullet towards mouse position
+    }
+
+    private cleanBullets() {
+        this.playerBullets.getChildren().forEach((bullet: Phaser.GameObjects.GameObject) => {
+            if (bullet.body!.position.x > this.scene.scale.width) {
+                bullet.destroy();
+            }
+            if (bullet.body && bullet.body!.position.x < 0) {
+                bullet.destroy();
+            }
+            if (bullet.body && bullet.body!.position.y > this.scene.scale.height) {
+                bullet.destroy();
+            }
+            if (bullet.body && bullet.body!.position.y < 0) {
+                bullet.destroy();
+            }
+        });
+    }
+
+    public getBullets(): Phaser.Physics.Arcade.Group{
+        return this.playerBullets;
     }
 }
